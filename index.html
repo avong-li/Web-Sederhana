@@ -1,1 +1,170 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Sederhana</title>
+    <style>
+        /* CSS untuk mengatur tampilan */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1c1e21;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #taskInput {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #dddfe2;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        #addTaskBtn {
+            padding: 12px 20px;
+            background-color: #1877f2; /* Warna biru ala Facebook/iOS */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f7f7f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            word-break: break-word;
+        }
+        
+        li.completed {
+            text-decoration: line-through;
+            color: #8a8d91;
+            background-color: #e9ebee;
+        }
+
+        .delete-btn {
+            background-color: #fa3e3e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 25px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📝 To-Do List</h1>
+        <div class="input-area">
+            <input type="text" id="taskInput" placeholder="Ketik tugas baru...">
+            <button id="addTaskBtn">Tambah</button>
+        </div>
+        <ul id="taskList">
+            </ul>
+    </div>
+
+    <script>
+        // JavaScript untuk membuat aplikasi berfungsi
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskInput = document.getElementById('taskInput');
+            const addTaskBtn = document.getElementById('addTaskBtn');
+            const taskList = document.getElementById('taskList');
+
+            // Fungsi untuk menambah tugas baru
+            function addTask() {
+                const taskText = taskInput.value.trim();
+                if (taskText === "") {
+                    alert("Tugas tidak boleh kosong!");
+                    return;
+                }
+
+                // Membuat elemen list item (li) baru
+                const li = document.createElement('li');
+                
+                // Menambahkan teks tugas
+                const taskSpan = document.createElement('span');
+                taskSpan.textContent = taskText;
+                li.appendChild(taskSpan);
+
+                // Membuat tombol hapus
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'X';
+                deleteBtn.className = 'delete-btn';
+                li.appendChild(deleteBtn);
+
+                // Menambahkan list item ke dalam daftar (ul)
+                taskList.appendChild(li);
+
+                // Mengosongkan input setelah tugas ditambahkan
+                taskInput.value = "";
+            }
+
+            // Event listener untuk tombol "Tambah"
+            addTaskBtn.addEventListener('click', addTask);
+            
+            // Event listener untuk menekan tombol "Enter" di input
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addTask();
+                }
+            });
+
+            // Event listener untuk daftar tugas (menandai selesai atau menghapus)
+            taskList.addEventListener('click', (e) => {
+                // Jika yang diklik adalah tombol hapus
+                if (e.target.classList.contains('delete-btn')) {
+                    const li = e.target.parentElement;
+                    taskList.removeChild(li);
+                } 
+                // Jika yang diklik adalah list item (bukan tombol hapus)
+                else if (e.target.tagName === 'SPAN' || e.target.tagName === 'LI') {
+                    const li = e.target.closest('li');
+                    li.classList.toggle('completed');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
